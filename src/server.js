@@ -19,16 +19,16 @@ const DIRFich = path.join(__dirname, 'ExamenAaDKevinTimus', 'FitxerKevin.txt');
 
 
 app.get('/mostrarNomsTimus', (req, res) => {
-  function obtenerContenidoRecursivo(dirPath, listaArchivos = []) {
-    const elementos = fs.readdirSync(dirPath, { withFileTypes: true });
+  function carpetas(direccion, listaArchivos = []) {
+    const elementos = fs.readdirSync(direccion, { withFileTypes: true });
 
     elementos.forEach(item => {
-      const rutaCompleta = path.join(dirPath, item.name);
+      const rutaCompleta = path.join(direccion, item.name);
 
       if (item.isDirectory()) {
         listaArchivos.push(rutaCompleta);
 
-        obtenerContenidoRecursivo(rutaCompleta, listaArchivos);
+        carpetas(rutaCompleta, listaArchivos);
       } else {
         listaArchivos.push(rutaCompleta);
       }
@@ -37,7 +37,7 @@ app.get('/mostrarNomsTimus', (req, res) => {
     return listaArchivos;
   }
 
-  const todoElContenido = obtenerContenidoRecursivo(DIR);
+  const todoElContenido = carpetas(DIR);
   console.log(todoElContenido);
   res.json(todoElContenido);
 
